@@ -30,8 +30,9 @@ public class StaticMethodRunner {
     private static void runMethod(Method method) {
         try {
             RunThis annotation = method.getAnnotation(RunThis.class);
-            System.out.printf("# %s ---%n", annotation.value());
+            System.out.printf("# %s %n", annotation.value());
             method.invoke(null);
+            System.out.println();
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
