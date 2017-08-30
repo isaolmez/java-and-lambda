@@ -1,5 +1,5 @@
-# java-lambda-expressions
-Java lambda expression examples:
+# Lambda
+Java lambda examples:
 - Motivation behind lambdas
 - Brief intro to syntax and scope
  
