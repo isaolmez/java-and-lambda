@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StreamOperations {
+public class BasicStreamOperations {
 
-    private static final StreamOperations OPERATIONS = new StreamOperations();
+    private static final BasicStreamOperations OPERATIONS = new BasicStreamOperations();
 
     public static void main(String[] args) {
         List<String> names = new ArrayList<>();
