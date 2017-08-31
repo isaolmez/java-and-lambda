@@ -6,9 +6,12 @@
   <groupId>com.isa</groupId>
   <artifactId>java.lambda</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-
   <name>Java Lambda Expressions</name>
   <description>Java lambda expression examples</description>
+
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
 
   <build>
     <plugins>
@@ -17,8 +20,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.2</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
       </plugin>
     </plugins>
