@@ -4,11 +4,13 @@ import com.isa.java.lambda.streams.common.Person;
 import com.isa.java.lambda.streams.common.PersonProvider;
 import com.isa.java.lambda.streams.common.RunThis;
 import com.isa.java.lambda.streams.common.StaticMethodRunner;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -221,6 +223,16 @@ public class CollectorOperations {
                 });
 
         System.out.printf("Joined names: %s%n", joined);
+    }
+
+    @RunThis("Custom collector")
+    public static void collectCustom() {
+        List<Person> collected = PersonProvider.personList().stream()
+                .filter(Objects::nonNull)
+                .collect(ArrayList::new, List::add,
+                        (List<Person> left, List<Person> right) -> left.addAll(right));
+
+        System.out.printf("Collected: %s%n", collected);
     }
 
     private CollectorOperations() {
