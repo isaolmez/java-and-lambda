@@ -154,8 +154,8 @@ public class CollectorOperations {
         System.out.printf("Reduced sum: %s%n", sum);
     }
 
-    @RunThis("sum(): Reduce as sum")
-    public static void reduce_sum() {
+    @RunThis("sum()")
+    public static void sum() {
         Integer sum = PersonProvider.personList().stream()
                 .mapToInt(Person::getAge)
                 .sum();
@@ -203,9 +203,9 @@ public class CollectorOperations {
                 .collect(Collectors.reducing("", (name1, name2) -> {
                     if (name1.isEmpty()) {
                         return name2;
-                    } else {
-                        return String.join("-", name1, name2);
                     }
+
+                    return String.join("-", name1, name2);
                 }));
 
         System.out.printf("Joined names: %s%n", joined);
