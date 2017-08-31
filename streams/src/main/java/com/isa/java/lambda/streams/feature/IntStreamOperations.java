@@ -7,6 +7,9 @@ import java.util.stream.IntStream;
 
 public class IntStreamOperations {
 
+    private IntStreamOperations() {
+    }
+
     public static void main(String[] args) {
         StaticMethodRunner.run(IntStreamOperations.class);
     }
@@ -34,8 +37,5 @@ public class IntStreamOperations {
         IntStream.generate(new Random()::nextInt).limit(10)
                 .forEachOrdered(System.out::print);
         System.out.println();
-    }
-
-    private IntStreamOperations() {
     }
 }

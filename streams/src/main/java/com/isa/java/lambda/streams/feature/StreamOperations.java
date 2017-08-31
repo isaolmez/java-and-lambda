@@ -13,6 +13,9 @@ import java.util.stream.Stream;
 
 public class StreamOperations {
 
+    private StreamOperations() {
+    }
+
     public static void main(String[] args) {
         StaticMethodRunner.run(StreamOperations.class);
     }
@@ -122,8 +125,5 @@ public class StreamOperations {
         } catch (Exception e) {
             System.out.printf("Exception occurred: %s%n", e.getMessage());
         }
-    }
-
-    private StreamOperations() {
     }
 }

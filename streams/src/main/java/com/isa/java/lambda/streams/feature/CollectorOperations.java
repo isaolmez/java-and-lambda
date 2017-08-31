@@ -19,6 +19,9 @@ import java.util.stream.Collectors;
 
 public class CollectorOperations {
 
+    private CollectorOperations() {
+    }
+
     public static void main(String[] args) {
         StaticMethodRunner.run(CollectorOperations.class);
     }
@@ -233,8 +236,5 @@ public class CollectorOperations {
                         (List<Person> left, List<Person> right) -> left.addAll(right));
 
         System.out.printf("Collected: %s%n", collected);
-    }
-
-    private CollectorOperations() {
     }
 }

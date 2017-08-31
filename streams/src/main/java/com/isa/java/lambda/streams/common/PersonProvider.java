@@ -2,10 +2,11 @@ package com.isa.java.lambda.streams.common;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
 public class PersonProvider {
+
+    private PersonProvider() {
+    }
 
     public static List<Person> personList() {
         return ImmutableList.<Person>builder()

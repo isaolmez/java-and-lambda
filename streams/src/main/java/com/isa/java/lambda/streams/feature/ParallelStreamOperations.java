@@ -8,12 +8,15 @@ import java.util.stream.Stream;
 
 public class ParallelStreamOperations {
 
+    private ParallelStreamOperations() {
+    }
+
     public static void main(String[] args) {
         StaticMethodRunner.run(ParallelStreamOperations.class);
     }
 
     @RunThis("parallel()")
-    public static void parallel_() {
+    public static void parallel() {
         int sum = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).parallel()
                 .mapToInt(Integer::intValue)
                 .peek(num -> System.out
@@ -24,7 +27,7 @@ public class ParallelStreamOperations {
     }
 
     @RunThis("parallel().sorted()")
-    public static void parallel_sort() {
+    public static void parallelSort() {
         Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).parallel()
                 .sorted(Collections.reverseOrder(Comparator.comparing(Integer::intValue)))
                 .forEachOrdered(num -> System.out

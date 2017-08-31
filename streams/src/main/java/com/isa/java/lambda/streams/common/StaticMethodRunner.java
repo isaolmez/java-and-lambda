@@ -6,10 +6,14 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
+/**
+ * Runs static methods that are annotated with @RunThis annotation.
+ */
 public class StaticMethodRunner {
+
+    private StaticMethodRunner() {
+    }
 
     public static <T> void run(Class<T> target) {
         getStaticMethods(target).stream()
@@ -34,7 +38,14 @@ public class StaticMethodRunner {
             method.invoke(null);
             System.out.println();
         } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            throw new MethodInvocationException("Error occurred when invoking method", e);
+        }
+    }
+
+    private static class MethodInvocationException extends RuntimeException {
+
+        MethodInvocationException(String message, Throwable cause) {
+            super(message, cause);
         }
     }
 }
