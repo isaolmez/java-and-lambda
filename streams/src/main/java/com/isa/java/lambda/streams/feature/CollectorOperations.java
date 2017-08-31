@@ -3,6 +3,7 @@ package com.isa.java.lambda.streams.feature;
 import com.isa.java.lambda.streams.common.Person;
 import com.isa.java.lambda.streams.common.PersonProvider;
 import com.isa.java.lambda.streams.common.RunThis;
+import com.isa.java.lambda.streams.common.StaticMethodRunner;
 import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
 import java.util.IntSummaryStatistics;
@@ -15,6 +16,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class CollectorOperations {
+
+    public static void main(String[] args) {
+        StaticMethodRunner.run(CollectorOperations.class);
+    }
 
     @RunThis("Collectors.toList(): Return as List")
     public static void collector() {

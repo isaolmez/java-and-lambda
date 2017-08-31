@@ -3,6 +3,7 @@ package com.isa.java.lambda.streams.feature;
 import com.isa.java.lambda.streams.common.Person;
 import com.isa.java.lambda.streams.common.PersonProvider;
 import com.isa.java.lambda.streams.common.RunThis;
+import com.isa.java.lambda.streams.common.StaticMethodRunner;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
@@ -11,6 +12,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StreamOperations {
+
+    public static void main(String[] args) {
+        StaticMethodRunner.run(StreamOperations.class);
+    }
 
     @RunThis("map().reduce()")
     public static void mapAndReduce() {
@@ -96,6 +101,15 @@ public class StreamOperations {
         System.out.printf("Sum: %s%n", sum);
     }
 
+    @RunThis("findFirst() and peek(): Lazy evaluation")
+    public static void peek() {
+        Optional<Integer> first = Stream.of(1, 2, 3)
+                .filter(num -> num < 2)
+                .peek(System.out::println)
+                .findFirst();
+
+        first.ifPresent(num -> System.out.printf("First: %s%n", num));
+    }
 
     @RunThis("Stream closed")
     public static void reusing_stream() {

@@ -1,10 +1,15 @@
 package com.isa.java.lambda.streams.feature;
 
 import com.isa.java.lambda.streams.common.RunThis;
+import com.isa.java.lambda.streams.common.StaticMethodRunner;
 import java.util.Random;
 import java.util.stream.IntStream;
 
 public class IntStreamOperations {
+
+    public static void main(String[] args) {
+        StaticMethodRunner.run(IntStreamOperations.class);
+    }
 
     @RunThis("range()")
     public static void range() {
