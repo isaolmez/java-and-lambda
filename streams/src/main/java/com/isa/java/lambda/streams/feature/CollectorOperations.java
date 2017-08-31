@@ -27,7 +27,7 @@ public class CollectorOperations {
     }
 
     @RunThis("Collectors.toList(): Return as List")
-    public static void collector() {
+    public static void toList() {
         List<Person> filtered = PersonProvider.personList().stream()
                 .filter(Person::isMarried)
                 .collect(Collectors.toList());
