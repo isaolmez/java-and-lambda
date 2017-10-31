@@ -38,4 +38,12 @@ public class IntStreamOperations {
                 .forEachOrdered(System.out::print);
         System.out.println();
     }
+
+    @RunThis("average()")
+    public static void average() {
+        IntStream.builder().add(1).add(3).add(5).build()
+                .average()
+                .ifPresent(System.out::println);
+        System.out.println();
+    }
 }

@@ -14,5 +14,6 @@ public class Person {
     private String name;
     private String city;
     private int age;
+    private int salary;
     private boolean married;
 }

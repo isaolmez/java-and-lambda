@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -52,12 +53,39 @@ public class CollectorOperations {
         System.out.printf("Ages: %s%n", ages);
     }
 
-    @RunThis("Collectors.groupingBy(): Group by property and return map")
+    @RunThis("Collectors.groupingBy(): Group by")
     public static void groupingBy() {
         Map<Integer, List<Person>> personByAge = PersonProvider.personList().stream()
                 .collect(Collectors.groupingBy(Person::getAge));
 
         personByAge.forEach((age, list) -> System.out.format("Age %d: %s%n", age, list));
+    }
+
+    @RunThis("Collectors.groupingBy(): Group by and map")
+    public static void groupingByAndMap() {
+        Map<Integer, List<String>> personCityByAge = PersonProvider.personList().stream()
+                .collect(Collectors
+                        .groupingBy(Person::getAge, Collectors.mapping(Person::getCity, Collectors.toList())));
+
+        personCityByAge.forEach((age, list) -> System.out.format("Age %d: %s%n", age, list));
+    }
+
+    @RunThis("Collectors.groupingBy(): Group by and reduce")
+    public static void groupingByAndReduce() {
+        Map<Integer, Integer> salarySumByAge = PersonProvider.personList().stream()
+                .collect(Collectors
+                        .groupingBy(Person::getAge, Collectors.reducing(0, Person::getSalary, Integer::sum)));
+
+        salarySumByAge.forEach((age, list) -> System.out.format("Age %d: %s%n", age, list));
+    }
+
+    @RunThis("Collectors.groupingBy(): Group by and reduce with jdk method")
+    public static void groupingByAndReduceJdk() {
+        Map<Integer, Integer> salarySumByAge = PersonProvider.personList().stream()
+                .collect(Collectors
+                        .groupingBy(Person::getAge, Collectors.summingInt(Person::getSalary)));
+
+        salarySumByAge.forEach((age, list) -> System.out.format("Age %d: %s%n", age, list));
     }
 
     @RunThis("Collectors.averagingDouble(): Take average of double values")
@@ -119,7 +147,7 @@ public class CollectorOperations {
         max.ifPresent(person -> System.out.printf("Max: %s%n", person));
     }
 
-    @RunThis("Collectors.minBy(): Find the minimym")
+    @RunThis("Collectors.minBy(): Find the minimum")
     public static void minBy() {
         Optional<Person> min = PersonProvider.personList().stream()
                 .collect(Collectors.minBy(Comparator.comparing(Person::getAge)));
@@ -145,11 +173,19 @@ public class CollectorOperations {
                 (partition, list) -> System.out.printf("Partition %s: %s%n", partition, list));
     }
 
-    @RunThis("Collectors.reducing(): Reduce as sum")
+    @RunThis("Collectors.reducing(identity, mapper): Reduce as sum")
     public static void reducing() {
         Integer sum = PersonProvider.personList().stream()
                 .map(Person::getAge)
                 .collect(Collectors.reducing(0, (age1, age2) -> age1 + age2));
+
+        System.out.printf("Reduced sum: %s%n", sum);
+    }
+
+    @RunThis("Collectors.reducing(identity, mapper, aggregator): Reduce as sum")
+    public static void reducingCompact() {
+        Integer sum = PersonProvider.personList().stream()
+                .collect(Collectors.reducing(0, Person::getAge, (age1, age2) -> age1 + age2));
 
         System.out.printf("Reduced sum: %s%n", sum);
     }
@@ -188,7 +224,7 @@ public class CollectorOperations {
     }
 
     @RunThis("Collectors.joining(): Join stream elements")
-    public static void joining() {
+    public static void joiningString() {
         String joined = PersonProvider.personList().stream()
                 .map(Person::getName)
                 .collect(Collectors.joining("-"));
@@ -197,7 +233,7 @@ public class CollectorOperations {
     }
 
     @RunThis("Collectors.reducing(): Join stream elements")
-    public static void joiningWithString() {
+    public static void joiningStringCustom() {
         String joined = PersonProvider.personList().stream()
                 .map(Person::getName)
                 .collect(Collectors.reducing("", (name1, name2) -> {
@@ -211,8 +247,18 @@ public class CollectorOperations {
         System.out.printf("Joined names: %s%n", joined);
     }
 
-    @RunThis("reduce(): Join stream elements")
-    public static void joiningWithStringJoiner() {
+    @RunThis("Stream.reduce(): Join stream elements with reduce()")
+    public static void joiningStringOnReduce() {
+        String joined = PersonProvider.personList().stream()
+                .map(Person::getName)
+                .reduce((a, b) -> a + "-" + b)
+                .get();
+
+        System.out.printf("Joined names: %s%n", joined);
+    }
+
+    @RunThis("Stream.reduce(): Join stream elements with reduce()")
+    public static void joiningStringOnReduceWithStringJoiner() {
         String joined = PersonProvider.personList().stream()
                 .map(Person::getName)
                 .reduce("", (name1, name2) -> {
@@ -236,5 +282,29 @@ public class CollectorOperations {
                         (List<Person> left, List<Person> right) -> left.addAll(right));
 
         System.out.printf("Collected: %s%n", collected);
+    }
+
+    @RunThis("Custom collector class")
+    public static void collectCustomClass() {
+
+        class CustomConsumer implements Consumer<Person> {
+
+            private List<Person> personList = new ArrayList<>();
+
+            @Override
+            public void accept(Person person) {
+                personList.add(person);
+            }
+
+            public void combine(CustomConsumer other) {
+                this.personList.addAll(other.personList);
+            }
+        }
+
+        CustomConsumer result = PersonProvider.personList().stream()
+                .filter(Objects::nonNull)
+                .collect(CustomConsumer::new, CustomConsumer::accept, CustomConsumer::combine);
+
+        System.out.printf("Collected: %s%n", result.personList);
     }
 }
