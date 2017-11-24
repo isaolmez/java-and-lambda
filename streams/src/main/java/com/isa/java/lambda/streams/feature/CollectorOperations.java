@@ -4,17 +4,14 @@ import com.isa.java.lambda.streams.common.Person;
 import com.isa.java.lambda.streams.common.PersonProvider;
 import com.isa.java.lambda.streams.common.RunThis;
 import com.isa.java.lambda.streams.common.StaticMethodRunner;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -272,39 +269,5 @@ public class CollectorOperations {
                 });
 
         System.out.printf("Joined names: %s%n", joined);
-    }
-
-    @RunThis("Custom collector")
-    public static void collectCustom() {
-        List<Person> collected = PersonProvider.personList().stream()
-                .filter(Objects::nonNull)
-                .collect(ArrayList::new, List::add,
-                        (List<Person> left, List<Person> right) -> left.addAll(right));
-
-        System.out.printf("Collected: %s%n", collected);
-    }
-
-    @RunThis("Custom collector class")
-    public static void collectCustomClass() {
-
-        class CustomConsumer implements Consumer<Person> {
-
-            private List<Person> personList = new ArrayList<>();
-
-            @Override
-            public void accept(Person person) {
-                personList.add(person);
-            }
-
-            public void combine(CustomConsumer other) {
-                this.personList.addAll(other.personList);
-            }
-        }
-
-        CustomConsumer result = PersonProvider.personList().stream()
-                .filter(Objects::nonNull)
-                .collect(CustomConsumer::new, CustomConsumer::accept, CustomConsumer::combine);
-
-        System.out.printf("Collected: %s%n", result.personList);
     }
 }
